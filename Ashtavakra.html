@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>अष्टावक्र गीता</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+Devanagari:wght@500;600&family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary": "#e9c349",
+                        "on-background": "#e5e2e1",
+                        "background": "#0a0a0c",
+                        "primary": "#d6bcf4",
+                        "surface": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "on-surface-variant": "#ccc4cf"
+                    },
+                    fontFamily: {
+                        "headline": ["Noto Serif"],
+                        "devanagari": ["Noto Serif Devanagari", "serif"],
+                        "body": ["Inter"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .cosmic-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0c 100%);
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200vmax;
+            height: 200vmax;
+            margin-top: -100vmax;
+            margin-left: -100vmax;
+            border-radius: 50%;
+        }
+
+        .star-layer-1 {
+            background-image: 
+                radial-gradient(circle at 20px 30px, #ffffff, transparent 1px),
+                radial-gradient(circle at 100px 80px, #e0ebff, transparent 1.5px),
+                radial-gradient(circle at 200px 150px, #ffffff, transparent 1px),
+                radial-gradient(circle at 310px 40px, #fffae6, transparent 2px),
+                radial-gradient(circle at 80px 250px, #ffffff, transparent 1px),
+                radial-gradient(circle at 260px 300px, #d6bcf4, transparent 1.5px),
+                radial-gradient(circle at 150px 350px, #ffffff, transparent 1px),
+                radial-gradient(circle at 50px 420px, #e9c349, transparent 2px);
+            background-size: 433px 433px;
+            animation: drift 240s linear infinite, twinkle 4s ease-in-out infinite alternate;
+        }
+
+        .star-layer-2 {
+            background-image: 
+                radial-gradient(circle at 50px 120px, #ffffff, transparent 1.5px),
+                radial-gradient(circle at 180px 40px, #e9c349, transparent 2px),
+                radial-gradient(circle at 280px 190px, #ffffff, transparent 1px),
+                radial-gradient(circle at 390px 80px, #e0ebff, transparent 1.5px),
+                radial-gradient(circle at 120px 310px, #ffffff, transparent 1px),
+                radial-gradient(circle at 220px 380px, #d6bcf4, transparent 2.5px),
+                radial-gradient(circle at 350px 280px, #ffffff, transparent 1px),
+                radial-gradient(circle at 420px 450px, #fffae6, transparent 1px);
+            background-size: 509px 509px;
+            animation: drift 320s linear infinite reverse, twinkle 5.5s ease-in-out infinite alternate 1.5s;
+        }
+
+        .star-layer-3 {
+            background-image: 
+                radial-gradient(circle at 30px 200px, #ffffff, transparent 2px),
+                radial-gradient(circle at 140px 70px, #fffae6, transparent 1px),
+                radial-gradient(circle at 240px 250px, #ffffff, transparent 1.5px),
+                radial-gradient(circle at 320px 140px, #d6bcf4, transparent 2px),
+                radial-gradient(circle at 90px 410px, #ffffff, transparent 1px),
+                radial-gradient(circle at 270px 430px, #e9c349, transparent 1.5px),
+                radial-gradient(circle at 450px 320px, #ffffff, transparent 1px),
+                radial-gradient(circle at 180px 480px, #e0ebff, transparent 2px);
+            background-size: 577px 577px;
+            animation: drift 400s linear infinite, twinkle 4.8s ease-in-out infinite alternate 2.7s;
+        }
+
+        .nebula {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200vmax;
+            height: 200vmax;
+            margin-top: -100vmax;
+            margin-left: -100vmax;
+            border-radius: 50%;
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(107, 85, 133, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 70% 60%, rgba(233, 195, 73, 0.05) 0%, transparent 40%);
+            filter: blur(80px);
+            animation: drift 120s linear infinite;
+        }
+
+        .sacred-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 2px 2px, rgba(214, 188, 244, 0.05) 1px, transparent 0);
+            background-size: 60px 60px;
+            opacity: 0.5;
+        }
+
+        @keyframes drift {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.15; }
+            to { opacity: 0.85; }
+        }
+
+        .text-glow {
+            text-shadow: 0 0 25px rgba(233, 195, 73, 0.4);
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            overflow-y: scroll;
+        }
+
+        body {
+            overflow-x: clip;
+        }
+
+        section, article, .chapter-title-slide {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        article, .chapter-title-slide {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .chapter-title-slide {
+            flex-direction: column;
+            justify-content: center;
+        }
+    
+        .text-purple-gold {
+            color: #D6BCF4;
+            text-shadow: 0 0 8px rgba(233, 195, 73, 0.5);
+        }
+
+        .sanskrit-verse {
+            font-family: 'Noto Serif Devanagari', serif;
+            font-weight: 500;
+        }
+    
+        @media (min-width: 1024px) {
+            .sanskrit-verse p {
+                white-space: nowrap;
+            }
+            .sanskrit-verse {
+                width: max-content;
+                min-width: 100%;
+            }
+        }
+
+        body.lang-hindi .lang-en { display: none; }
+        body.lang-hindi .lang-hi { display: block; }
+        body:not(.lang-hindi) .lang-en { display: block; }
+        body:not(.lang-hindi) .lang-hi { display: none; }
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch; 
+            overscroll-behavior: contain; 
+            transform: translate3d(0, 0, 0); 
+            -webkit-transform: translate3d(0, 0, 0);
+            backface-visibility: hidden; 
+            -webkit-backface-visibility: hidden;
+            touch-action: pan-y; 
+        }
+
+        .glass-btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(0, 0, 0, 0.4) 100%);
+            backdrop-filter: blur(24px) saturate(1.5);
+            -webkit-backdrop-filter: blur(24px) saturate(1.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom-color: rgba(255, 255, 255, 0.05);
+            border-right-color: rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 4px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            isolation: isolate; 
+        }
+
+        .glass-btn::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            box-shadow: 0 0 30px rgba(233, 195, 73, 0.6), inset 0 0 15px rgba(233, 195, 73, 0.2);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1; 
+            pointer-events: none;
+        }
+
+        .glass-btn:hover::after {
+            animation: pulse-glow-opacity 1.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulse-glow-opacity {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-secondary/30 selection:text-secondary">
+
+<!-- Navigation Buttons (Less Invasive) -->
+<button id="menu-btn" onclick="toggleSidebar()" class="fixed top-4 left-4 md:top-6 md:left-6 z-50 px-4 py-2 rounded-full glass-btn text-secondary/70 hover:text-secondary hover:scale-105 transition-all duration-500 focus:outline-none flex items-center justify-center">
+    <span class="font-headline italic tracking-widest text-xs md:text-sm">Chapters</span>
+</button>
+
+<a id="library-btn" href="https://iamgodkiller.github.io/library" class="fixed top-4 right-4 md:top-6 md:right-6 z-50 px-4 py-2 rounded-full glass-btn text-secondary/70 hover:text-secondary hover:scale-105 transition-all duration-500 focus:outline-none flex items-center justify-center no-underline">
+    <span class="font-headline italic tracking-widest text-xs md:text-sm">Library</span>
+</a>
+
+<!-- Sidebar -->
+<div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 opacity-0 pointer-events-none transition-opacity duration-500 ease-out"></div>
+
+<div id="sidebar" class="fixed top-4 bottom-4 left-4 w-80 rounded-[2rem] bg-gradient-to-br from-white/10 via-black/20 to-black/60 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 border-b-white/5 border-r-white/5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),0_20px_40px_rgba(0,0,0,0.8)] transform -translate-x-[120%] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform z-40 flex flex-col">
+    <button onclick="toggleSidebar()" class="absolute top-6 right-6 z-50 p-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-on-surface-variant hover:text-primary transition-all duration-300 focus:outline-none flex items-center justify-center">
+        <span class="material-symbols-outlined text-sm">close</span>
+    </button>
+    <div class="p-8 flex-1 overflow-y-auto no-scrollbar">
+        <h2 class="text-secondary font-headline text-2xl tracking-widest italic mb-2">Chapters</h2>
+        <p class="text-[10px] text-on-surface-variant/60 tracking-widest uppercase mb-8">Ashtavakra Gita</p>
+        <nav id="chapter-list" class="space-y-3"></nav>
+    </div>
+</div>
+
+<div class="cosmic-canvas">
+    <div class="stars star-layer-1"></div>
+    <div class="stars star-layer-2"></div>
+    <div class="stars star-layer-3"></div>
+    <div class="nebula"></div>
+    <div class="sacred-overlay"></div>
+</div>
+
+<main class="relative z-10">
+    <!-- Hero -->
+    <section class="flex flex-col items-center justify-center min-h-screen px-6 text-center relative">
+        <div class="relative py-12">
+            <span class="font-label text-secondary tracking-[0.4em] uppercase text-[10px] md:text-xs mb-10 md:mb-14 block">Sage Ashtavakra &amp; King Janaka</span>
+            <h1 class="sanskrit-verse text-7xl md:text-[8rem] lg:text-[10rem] text-primary font-semibold italic tracking-widest text-glow mb-4 md:mb-6 leading-tight">
+                अष्टावक्र गीता
+            </h1>
+            <div class="font-headline text-2xl md:text-4xl text-secondary/70 mb-8 tracking-widest italic">Ashtavakra Gita</div>
+            <p class="max-w-2xl mx-auto text-on-surface-variant/80 font-body text-base md:text-lg leading-relaxed font-light">A classic dialogue on the nature of Self, reality, and ultimate liberation.</p>
+        </div>
+        <div class="absolute bottom-10 animate-bounce text-secondary/50">
+            <span class="material-symbols-outlined text-4xl">keyboard_arrow_down</span>
+        </div>
+    </section>
+
+    <!-- Verses Container -->
+    <div id="verses-container" class="max-w-7xl mx-auto px-6"></div>
+
+    <!-- Final CTA -->
+    <section class="flex flex-col items-center justify-center py-32 text-center px-6 min-h-screen">
+        <div class="max-w-4xl mx-auto">
+            <div class="sanskrit-verse text-5xl md:text-8xl lg:text-9xl text-secondary mb-4 md:mb-8 italic tracking-widest text-glow font-semibold">
+                तत्त्वमसि
+            </div>
+            <div class="font-headline text-2xl md:text-4xl text-secondary/40 mb-10 md:mb-16 tracking-[0.3em] uppercase">Tat Tvam Asi</div>
+            <div class="space-y-12">
+                <p class="text-on-surface-variant font-body text-xl md:text-2xl font-light tracking-widest uppercase">thou art that.</p>
+                <a href="https://hinduism.in" rel="noopener noreferrer" target="_blank" class="inline-flex px-10 py-4 rounded-full glass-btn text-secondary hover:scale-110 transition-transform duration-500 focus:outline-none items-center justify-center no-underline cursor-pointer">
+                    <span class="font-headline tracking-[0.2em] uppercase text-sm md:text-base">Support the Library</span>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    let activeChapter = 1;
+    let lastScrollY = window.scrollY;
+
+    // Processor to ensure the last word stays with the Viram (punctuation)
+    function makePunctuationSticky(htmlString) {
+        return htmlString.replace(/([^\s<]+)([।॥])/g, '<span class="inline-block">$1$2</span>');
+    }
+
+    function handleNavVisibility() {
+        const menuBtn = document.getElementById('menu-btn');
+        const libraryBtn = document.getElementById('library-btn');
+        const sidebar = document.getElementById('sidebar');
+        const isSidebarClosed = sidebar.classList.contains('-translate-x-[120%]');
+        
+        const currentScrollY = window.scrollY;
+
+        if (isSidebarClosed) {
+            if (currentScrollY < lastScrollY || currentScrollY <= 50) {
+                menuBtn.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-10');
+                libraryBtn.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-10');
+            } 
+            else if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                menuBtn.classList.add('opacity-0', 'pointer-events-none', '-translate-y-10');
+                libraryBtn.classList.add('opacity-0', 'pointer-events-none', '-translate-y-10');
+            }
+        }
+        lastScrollY = currentScrollY;
+    }
+
+    function toggleTranslation() {
+        const isHindi = document.body.classList.toggle('lang-hindi');
+        document.querySelectorAll('.trans-btn').forEach(btn => {
+            btn.innerText = isHindi ? 'ENGLISH' : 'HINDI';
+        });
+    }
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const menuBtn = document.getElementById('menu-btn');
+        const libraryBtn = document.getElementById('library-btn');
+        const isClosed = sidebar.classList.contains('-translate-x-[120%]');
+        const isMobile = window.innerWidth < 768;
+
+        if (isClosed) {
+            sidebar.classList.remove('-translate-x-[120%]');
+            overlay.classList.remove('opacity-0', 'pointer-events-none');
+            menuBtn.classList.add('opacity-0', 'pointer-events-none', 'scale-75');
+            if (isMobile && libraryBtn) libraryBtn.classList.add('opacity-0', 'pointer-events-none', 'scale-75');
+        } else {
+            sidebar.classList.add('-translate-x-[120%]');
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            menuBtn.classList.remove('opacity-0', 'pointer-events-none', 'scale-75');
+            if (libraryBtn) libraryBtn.classList.remove('opacity-0', 'pointer-events-none', 'scale-75');
+            handleNavVisibility();
+        }
+    }
+
+    function switchChapter(num) {
+        toggleSidebar();
+        setTimeout(() => {
+            const target = document.getElementById(`chapter-${num}`);
+            if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+    }
+
+    function updateSidebarActive(num) {
+        if(activeChapter === num) return;
+        activeChapter = num;
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.classList.remove('bg-secondary/20', 'border-secondary/50', 'shadow-[0_0_15px_rgba(233,195,73,0.2)]');
+            btn.classList.add('border-transparent');
+            btn.querySelector('.nav-text').classList.replace('text-secondary', 'text-on-surface');
+            btn.querySelector('.nav-title').classList.remove('text-primary');
+        });
+        const activeBtn = document.getElementById(`nav-btn-${num}`);
+        if(activeBtn) {
+            activeBtn.classList.replace('border-transparent', 'border-secondary/50');
+            activeBtn.classList.add('bg-secondary/20', 'shadow-[0_0_15px_rgba(233,195,73,0.2)]');
+            activeBtn.querySelector('.nav-text').classList.replace('text-on-surface', 'text-secondary');
+            activeBtn.querySelector('.nav-title').classList.add('text-primary');
+        }
+    }
+
+    function setupScrollObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) updateSidebarActive(parseInt(entry.target.id.replace('chapter-', '')));
+            });
+        }, { rootMargin: '-30% 0px -60% 0px' });
+        document.querySelectorAll('.chapter-section').forEach(section => observer.observe(section));
+        window.addEventListener('scroll', handleNavVisibility, { passive: true });
+    }
+
+    // Fully restored Gita Data with chapters 1-20
+    const gitaData = [
+        {
+            chapter: 1,
+            sanskritTitle: "साक्ष्युपदेश",
+            title: "Instruction on Self-Realization",
+            verses: [
+                {
+                    sanskrit: "<p>कथं ज्ञानमवाप्नोति कथं मुक्तिर्भविष्यति।</p><p>वैराग्यं च कथं प्राप्तमेतद् ब्रूहि मम प्रभो ।।</p>",
+                    transliteration: "katham jnanam avapnoti katham muktir bhavishyati |<br/>vairagyam cha katham praptam etad bruhi mama prabho ||",
+                    english: "\"Master, how is Knowledge to be achieved, detachment acquired, liberation attained?\"",
+                    hindi: "\"हे प्रभो! ज्ञान कैसे प्राप्त होता है? मुक्ति कैसे होती है? और वैराग्य कैसे प्राप्त होता है? यह मुझे कहिए।\""
+                },
+                {
+                    sanskrit: "<p>मुक्तिमिच्छसि चेत्तात विषयान् विषवत्यज् ।</p><p>क्षमार्जवदयातोषं सत्यं पीयूषवद् भज ।।</p>",
+                    transliteration: "muktim icchasi chet tata vishayan visha vat tyaja |<br/>kshama arjava daya tosham satyam piyusha vad bhaja ||",
+                    english: "\"To be free, shun the experiences of the senses like poison. Turn your attention to forgiveness, sincerity, kindness, simplicity, truth.\"",
+                    hindi: "\"हे प्रिय ! यदि तू मुक्ति चाहता है तो विषयों को विष के समान छोड़ दे और क्षमा, आर्जव (सरलता), दया, सन्तोष और सत्य को अमृत के समान सेवन कर।\""
+                },
+                {
+                    sanskrit: "<p>न पृथ्वी न जलं नाग्निर्न वायुर्यौर्न वा भवान्।</p><p>एषां साक्षिणमात्मामं चिद्रूपं विद्धि मुक्तये ।।</p>",
+                    transliteration: "na prithvi na jalam na agnir na vayur dyaur na va bhavan |<br/>esham sakshinam atmanam chid rupam viddhi muktaye ||",
+                    english: "\"You are not earth, water, fire or air. Nor are you empty space. Liberation is to know yourself as Awareness alone—the Witness of these.\"",
+                    hindi: "\"तू न पृथ्वी है, न जल है, न अग्नि है, न वायु है, न आकाश है। मुक्ति के लिये अपने को इन सबका साक्षी चैतन्यरूप जान।\""
+                },
+                {
+                    sanskrit: "<p>यदि देहं पृथक्कृत्य चित्ति विश्राम्य तिष्ठसि ।</p><p>अधुनैव सुखी शान्तः बन्धमुक्तो भविष्यसि ।।</p>",
+                    transliteration: "yadi deham prithak kritya chiti vishramya tishthasi |<br/>adhunaiva sukhi shantah bandha mukto bhavishyasi ||",
+                    english: "\"Abide in Awareness with no illusion of person. You will be instantly free and at peace.\"",
+                    hindi: "\"यदि तू देह को अपने से अलग कर और चैतन्य में विश्राम कर स्थित है तो अभी ही सुखी, शान्त और बन्ध-मुक्त हो जायेगा।\""
+                },
+                {
+                    sanskrit: "<p>न त्वं विप्रादिको वर्णो नाश्रमी नाक्षगोचरः ।</p><p>असंगोऽसि निराकारो विश्वसाक्षी सुखी भव।।</p>",
+                    transliteration: "na tvam vipradiko varno na ashrami na aksha gocharah |<br/>asango'si nirakaro vishva sakshi sukhi bhava ||",
+                    english: "\"You have no caste or duties. You are invisible, unattached, formless. You are the Witness of all things. Be happy.\"",
+                    hindi: "\"तू ब्राह्मण आदि वर्ण नहीं है और न तू किसी आश्रम वाला है; न आँख आदि इन्द्रियों का विषय है। ऐसा जानकर सुखी हो।\""
+                },
+                {
+                    sanskrit: "<p>धर्माऽधर्मो सुखं दुःखं मानसानि न ते विभो ।</p><p>न कर्ताऽसि न भोक्ताऽसि मुक्त एवासि सर्वदा ।।</p>",
+                    transliteration: "dharmadharmo sukham duhkham manasani na te vibho |<br/>na karta'si na bhokta'si mukta evasi sarvada ||",
+                    english: "\"Right and wrong, pleasure and pain, exist in mind only. They are not your concern. You neither do nor enjoy. You are free.\"",
+                    hindi: "\"तू विभो ! (व्यापक) धर्म और अधर्म, सुख और दुःख मन के हैं। तेरे लिये नहीं हैं। तू न कर्त्ता है, न भोक्ता। तू तो सर्वदा मुक्त ही है।\""
+                },
+                {
+                    sanskrit: "<p>एको दृष्टाऽसि सर्वस्य मुक्तप्रायोऽसि सर्वदा ।</p><p>अवमेय हि ते बन्धो दृष्टारं पश्यसीतरम् ।।</p>",
+                    transliteration: "eko drashta'si sarvasya muktaprayo'si sarvada |<br/>avameya hi te bandho drashtaram pashyasitaram ||",
+                    english: "\"You are the Solitary Witness of All That Is, forever free. Your only bondage is not seeing This.\"",
+                    hindi: "\"तू एक सबका दृष्टा है, और सदा सचमुच मुक्त है। तेरा बन्धन तो यही है कि तू अपने को छोड़कर दूसरे को दृष्टा देखता है।\""
+                },
+                {
+                    sanskrit: "<p>अहं कर्तेत्यहंमान महाकृष्णाहि दंशितः ।</p><p>नाहं कर्तेति विश्वासामृतं पीत्वा सुखी भव ।।</p>",
+                    transliteration: "aham kartetyahammana mahakrishnahi damshitah |<br/>naham karteti vishvasamritam pitva sukhi bhava ||",
+                    english: "\"The thought: 'I am the doer' is the bite of a poisonous snake. To know: 'I do nothing' is the wisdom of faith. Be happy.\"",
+                    hindi: "\"'मैं कर्त्ता हूँ'- ऐसा अहंकाररूपी विशाल काले सर्प से दंशित हुआ तू, 'मैं कर्त्ता नहीं हूँ' ऐसे विश्वासरूपी अमृत को पीकर सुखी हो।\""
+                },
+                {
+                    sanskrit: "<p>एको विशुद्ध बोधोव्योऽहमिति निश्चयवह्निना ।</p><p>प्रज्वाल्याज्ञानगहनं वीतशोकः सुखी भव ।।</p>",
+                    transliteration: "eko vishuddha bodho'ham iti nishchayavahnina |<br/>prajvalyajnanagahanam vitashokah sukhi bhava ||",
+                    english: "\"A single understanding: 'I am the One Awareness,' consumes all suffering in the fire of an instant. Be happy.\"",
+                    hindi: "\"'मैं एक विशुद्ध बोध हूँ' ऐसी निश्चयरूपी अग्नि से गहन अज्ञान को जलाकर तू शोकरहित हुआ सुखी हो।\""
+                },
+                {
+                    sanskrit: "<p>यत्र विश्वमिदं भाति कल्पितं रज्जुसर्पवत्।</p><p>आन्दपरमानन्दः स बोधस्त्वं सुखं चर।।</p>",
+                    transliteration: "yatra vishvamidam bhati kalpitam rajjusarpavat |<br/>anandaparamanandah sa bodhastvam sukham chara ||",
+                    english: "\"You are unbounded Awareness—Bliss, Supreme Bliss—in which the universe appears like the mirage of a snake in a rope. Be happy.\"",
+                    hindi: "\"जहाँ यह विश्व रस्सी में सर्प के समान कल्पित भासता है वही आनन्द परमानन्द बोध है। अतः तू सुखपूर्वक विचर।\""
+                },
+                {
+                    sanskrit: "<p>मुक्ताभिमानी मुक्तोहि बद्धो बद्धाभिमान्यपि ।</p><p>किंवदन्तीह सत्येयं या मतिः सा गतिर्भवेत् ।।</p>",
+                    transliteration: "muktabhimani muktohi baddho baddhabhimanyapi |<br/>kimvadantiha satyeyam ya matih sa gatirbhavet ||",
+                    english: "\"It is true what they say: 'You are what you think.' If you think you are bound you are bound. If you think you are free you are free.\"",
+                    hindi: "\"मुक्ति का अभिमानी मुक्त है, और बद्ध का अभिमानी बद्ध है। यहाँ यह किंवदन्ती सत्य है कि जैसी मति होती है वैसी ही गति होती है।\""
+                },
+                {
+                    sanskrit: "<p>आत्मा साक्षी विभुः पूर्ण एको मुक्तश्चिदक्रियः ।</p><p>असंगो निस्पृहः शान्तो भ्रमात्संसारवानिव ।।</p>",
+                    transliteration: "atma sakshi vibhuh purna eko muktashchidakriyah |<br/>asango nisprihah shanto bhramatsamsaravaniva ||",
+                    english: "\"You are Self—the Solitary Witness. You are perfect, all-pervading, One. You are free, desireless, forever still. The universe is but a seeming in You.\"",
+                    hindi: "\"आत्मा साक्षी है, व्यापक है, पूर्ण है, एक है, मुक्त है, चैतन्यस्वरूप है, क्रियारहित है, असंग है, निस्पृह (इच्छारहित) है, शान्त है। यह भ्रम से संसारी जैसा (बन्धनग्रस्त) भासता है।\""
+                },
+                {
+                    sanskrit: "<p>कूटस्थं बोधमद्वैतमात्मानं परिभावयः।</p><p>आभासोऽहं भ्रमं मुक्त्वा भावं बाह्यमथान्तरम् ।।</p>",
+                    transliteration: "kutastham bodhamadvaitamatmanam paribhavaya |<br/>abhaso'ham bhramam muktva bhavam bahyamathantharam ||",
+                    english: "\"Meditate on this: 'I am Awareness alone—Unity itself.' Give up the idea that you are separate, a person, that there is within and without.\"",
+                    hindi: "\"'मैं आभासरूप हूँ' ऐसे भ्रम को एवं बाहर-भीतर के भाव को छोड़कर तू कूटस्थ बोधरूप एवं अद्वैत, आत्मा का विचार कर।\""
+                },
+                {
+                    sanskrit: "<p>देहाभिमानपाशेन चिरं बद्धोऽसि पुत्रक ।</p><p>बोधोऽहं ज्ञानखङ्गेन तन्निष्कृत्य सुखी भव ।।</p>",
+                    transliteration: "dehabhimanapashena chiram baddho'si putraka |<br/>bodho'ham jnanakhangena tannishkritya sukhi bhava ||",
+                    english: "\"You have long been bound thinking: 'I am a person.' Let the knowledge: 'I am Awareness alone' be the sword that frees you.\"",
+                    hindi: "\"हे पुत्र ! तू बहुत काल से देहाभिमान के पाश से बँधा हुआ है। उसी पाश को 'मैं बोध हूँ' इस ज्ञान की तलवार से काटकर तू सुखी हो।\""
+                },
+                {
+                    sanskrit: "<p>निःसंगो निष्क्रियोऽसि त्वं स्वप्रकाशो निरञ्जनः।</p><p>अयमेव हि ते बन्धः समाधिमनुतिष्ठसि ।।</p>",
+                    transliteration: "nihsango nishkriyo'si tvam svaprakasho niranjanah |<br/>ayameva hi te bandhah samadhimanutishthasi ||",
+                    english: "\"You are now and forever free, luminous, transparent, still. The practice of meditation keeps one in bondage.\"",
+                    hindi: "\"तू असंग है, क्रिया-रहित है, स्वयं प्रकाश है, और निरंजन है। तेरा बन्धन यही है कि तू समाधि का अनुष्ठान करता है।\""
+                },
+                {
+                    sanskrit: "<p>त्वया व्याप्तमिदं विश्वं त्वयि प्रोतं यथार्थतः ।</p><p>शुद्धबुद्धस्वरूपस्त्वं मा गमः क्षुद्रचित्तताम् ।।</p>",
+                    transliteration: "tvaya vyaptamidam vishvam tvayi protam yatharthatah |<br/>shuddhabuddhasvarupastvam ma gamah kshudrachittatam ||",
+                    english: "\"You are pure Consciousness—the substance of the universe. The universe exists within you. Don't be small-minded.\"",
+                    hindi: "\"यह संसार तुझमें व्याप्त है, तुझ ही में पिरोया है। यथार्थतः तू चैतन्यस्वरूप है। अतः क्षुद्रचित्त को मत प्राप्त हो।\""
+                },
+                {
+                    sanskrit: "<p>निरपेक्षो निर्विकारो निर्भरः शीतलाशयः ।</p><p>अगाधबुद्धिरक्षुब्धो भव चिन्मात्रवासनः ।।</p>",
+                    transliteration: "nirapeksho nirvikaro nirbharah shitalashayah |<br/>agadhabuddhirakshubdho bhava chinmatravasanah ||",
+                    english: "\"You are unconditioned, changeless, formless. You are solid, unfathomable, cool. Desire nothing. You are Consciousness.\"",
+                    hindi: "\"तू निरपेक्ष है, निर्विकार है, स्वनिर्भर है, शान्ति और मुक्ति का स्थान है, अगाध बुद्धिरूप है, क्षोभ-शून्य है। अतः चैतन्यमात्र में निष्ठा वाला हो।\""
+                },
+                {
+                    sanskrit: "<p>साकारमनृतं विद्धि निराकारं तु निश्चलम् ।</p><p>एतत् तत्त्वोपदेशेन न पुनर्भवसम्भवः ।।</p>",
+                    transliteration: "sakaramanritam viddhi nirakaram tu nishchalam |<br/>etat tattvopadeshena na punarbhavasambhavah ||",
+                    english: "\"That which has form is not real. Only the formless is permanent. Once this is known, you will not return to illusion.\"",
+                    hindi: "\"साकार को मिथ्या जान, निराकार को निश्चल जान। इस तत्त्व के उपदेश से संसार में पुनः उत्पत्ति नहीं होती।\""
+                },
+                {
+                    sanskrit: "<p>यथैवादर्शमध्यस्थे रूपेऽन्तः परितस्तु सः।</p><p>तथैवास्मिन् शरीरेऽन्तः परितः परमेश्वरः ।।</p>",
+                    transliteration: "yathaivadarshamadhyasthe rupe'ntah paritastu sah |<br/>tathaivasmin sharire'ntah paritah parameshvarah ||",
+                    english: "\"Just as a mirror exists both within and without the image reflected, the Supreme Self exists both within and without the body.\"",
+                    hindi: "\"जिस तरह दर्पण अपने में प्रतिबिम्बित रूप के भीतर और बाहर स्थित है, उसी तरह परमात्मा इस शरीर के भीतर और बाहर स्थित है।\""
+                },
+                {
+                    sanskrit: "<p>एकं सर्वगतं व्योम बहिरन्तर यथा घटे।</p><p>नित्यं निरन्तरं ब्रह्म सर्वभूतगणो तथा।।</p>",
+                    transliteration: "ekam sarvagatam vyoma bahirantara yatha ghate |<br/>nityam nirantaram brahma sarvabhutagano tatha ||",
+                    english: "\"Just as the same space exists both within and without a jar, the timeless, all-pervasive One exists as Totality.\"",
+                    hindi: "\"जिस प्रकार सर्वव्यापी एक आकाश घट के भीतर और बाहर स्थित है, उसी तरह नित्य और निरन्तर ब्रह्म सब भूतों में स्थित है।\""
+                }
+            ]
+        },
+        {
+            chapter: 2,
+            sanskritTitle: "आश्चर्यम्",
+            title: "Joy of Self-Realization",
+            verses: [
+                {
+                    sanskrit: "<p>अहो निरंजनः शान्तो बोधोऽहं प्रकृतेः परः ।</p><p>एतावन्तमहं कालं मोहेनैव विडम्बितः ।।</p>",
+                    transliteration: "aho niranjanah shanto bodho'ham prakriteh parah |<br/>etavantam aham kalam mohenaiva vidambitah ||",
+                    english: "\"O, I am spotless, tranquil, pure consciousness, and beyond nature. All this time I have been duped by illusion.\"",
+                    hindi: "\"आश्चर्य! मैं निरंजन, शांत, ज्ञानस्वरूप और प्रकृति से परे हूँ। इतने समय तक मैं मोह द्वारा ही ठगा गया।\""
+                },
+                {
+                    sanskrit: "<p>यथा प्रकाशयाम्येको देहमेनमथाखिलम् ।</p><p>जगत्तस्य ममैवाखिलामिदं यद्वा न किंचन ।।</p>",
+                    transliteration: "yatha prakashayamyeko dehamenamathakhilam |<br/>jagattasya mamaivakhilamidam yadva na kimchana ||",
+                    english: "\"As I alone give light to this body, so do I give light to the whole world. Therefore, either the whole world is mine, or nothing is.\"",
+                    hindi: "\"जैसे मैं अकेला इस शरीर को प्रकाशित करता हूँ, वैसे ही इस संपूर्ण जगत को भी। इसलिए या तो यह पूरा जगत मेरा है, या कुछ भी मेरा नहीं है।\""
+                },
+                {
+                    sanskrit: "<p>सशरीरमहो विश्वं परित्यज्य मयाधुना ।</p><p>कुतश्चित् कौशलादेव परमात्मा विलोक्यते ।।</p>",
+                    transliteration: "sashariramaho vishvam parityajya mayadhuna |<br/>kutashchit kaushaladeva paramatma vilokyate ||",
+                    english: "\"Now, having renounced the body and the world, by some skill or grace, the Supreme Self is realized.\"",
+                    hindi: "\"अहो! अब शरीर सहित इस विश्व को त्याग कर, किसी विशेष कौशल या कृपा से ही परमात्मा के दर्शन होते हैं।\""
+                },
+                {
+                    sanskrit: "<p>यथा न तोयतो भिन्ना ऊर्मयः फेनबुद्बुदाः ।</p><p>आत्मनो न तथा भिन्नं विश्वमात्मविनिर्गतम् ।।</p>",
+                    transliteration: "yatha na toyato bhinna urmayah phenabudbudah |<br/>atmano na tatha bhinnam vishvamatmavinirgatam ||",
+                    english: "\"Just as waves, foam, and bubbles are not different from water, so the universe, coming from the Self, is not different from the Self.\"",
+                    hindi: "\"जैसे लहरें, झाग और बुलबुले पानी से भिन्न नहीं हैं, वैसे ही आत्मा से उत्पन्न यह विश्व आत्मा से भिन्न नहीं है।\""
+                },
+                {
+                    sanskrit: "<p>तन्तुमात्रो भवेदेव पटो यद्वद्विचारितः ।</p><p>आत्ममात्रमिदं तद्वद्विश्वमेतद्विचारितम् ।।</p>",
+                    transliteration: "tantumatro bhavedeva pato yadvadvicharitah |<br/>atmamatramidam tadvadvishvametadvicharitam ||",
+                    english: "\"Just as cloth, when analyzed, is found to be only thread, so this universe, when analyzed, is found to be only the Self.\"",
+                    hindi: "\"जैसे विचार करने पर कपड़ा केवल धागा ही सिद्ध होता है, वैसे ही विचार करने पर यह विश्व केवल आत्मा ही सिद्ध होता है।\""
+                },
+                {
+                    sanskrit: "<p>यथैवेक्षुरसे क्लृप्ता तेन व्याप्तेव शर्करा ।</p><p>तथा विश्वं मयि क्लृप्तं मया व्याप्तं निरन्तरम् ।।</p>",
+                    transliteration: "yathaivekshurase klripta tena vyapteva sharkara |<br/>tatha vishvam mayi klriptam maya vyaptam nirantaram ||",
+                    english: "\"Just as sugar made from sugarcane juice is entirely permeated by it, so the universe produced in Me is entirely permeated by Me.\"",
+                    hindi: "\"जैसे गन्ने के रस से बनी चीनी रस से ही व्याप्त है, वैसे ही मुझमें कल्पित यह विश्व निरंतर मुझसे ही व्याप्त है।\""
+                },
+                {
+                    sanskrit: "<p>आत्माज्ञानाज्जगद्भाति आत्मज्ञानान्न भासते ।</p><p>रज्ज्वाज्ञानादहिर्भाति तज्ज्ञानाद्भासते न हि ।।</p>",
+                    transliteration: "atmajnanajjagadbbhati atmajnananna bhasate |<br/>rajjvajnianadahirbhati tajjnanadbhasate na hi ||",
+                    english: "\"From ignorance of the Self the world appears; from knowledge of the Self it appears no more. From ignorance of the rope a snake appears; from knowledge of the rope it appears no more.\"",
+                    hindi: "\"आत्मा के अज्ञान से जगत भासता है, आत्मा के ज्ञान से नहीं। रस्सी के अज्ञान से सर्प भासता है, उसके ज्ञान से नहीं।\""
+                },
+                {
+                    sanskrit: "<p>प्रकाशो मे निजं रूपं नातिरिक्तोऽस्म्यहं ततः ।</p><p>यदा प्रकाशते विश्वं तदाहंभास एव हि ।।</p>",
+                    transliteration: "prakasho me nijam rupam natirikto'smyaham tatah |<br/>yada prakashate vishvam tadahambhasa eva hi ||",
+                    english: "\"Light is my very nature; I am not different from it. When the universe manifests, it is I alone that shines.\"",
+                    hindi: "\"प्रकाश मेरा निज रूप है, मैं उससे भिन्न नहीं हूँ। जब यह विश्व प्रकाशित होता है, तब वास्तव में मेरा ही प्रकाश होता है।\""
+                },
+                {
+                    sanskrit: "<p>अहो विकल्पितं विश्वमज्ञानान्मयि भासते ।</p><p>रूप्यं शुक्तौ फणी रज्जौ वारि सूर्यकराविव ।।</p>",
+                    transliteration: "aho vikalpitam vishvamajnananmayi bhasate |<br/>rupyam shuktau phani rajjau vari suryakaraviva ||",
+                    english: "\"O, the illusory universe appears in me due to ignorance, like silver in mother-of-pearl, a snake in a rope, or water in a mirage.\"",
+                    hindi: "\"आश्चर्य! यह कल्पित विश्व अज्ञान के कारण मुझमें ऐसे भासता है, जैसे सीप में चाँदी, रस्सी में साँप, या धूप में पानी।\""
+                },
+                {
+                    sanskrit: "<p>मत्तो विनिर्गतं विश्वं मय्येव लयमेष्यति ।</p><p>मृदि कुम्भो जले वीचिः कनके कटकं यथा ।।</p>",
+                    transliteration: "matto vinirgatam vishvam mayyeva layameshyati |<br/>mridi kumbho jale vichih kanake katakam yatha ||",
+                    english: "\"The universe, which has emanated from Me, will resolve into Me, just as a pot resolves into clay, a wave into water, and a bracelet into gold.\"",
+                    hindi: "\"मुझसे उत्पन्न हुआ विश्व मुझमें ही लीन हो जाएगा, जैसे घड़ा मिट्टी में, लहर जल में, और कंगन सोने में।\""
+                },
+                {
+                    sanskrit: "<p>अहो अहं नमो मह्यं विनाशो यस्य नास्ति मे ।</p><p>ब्रह्मादिस्तम्बपर्यन्तं जगन्नाशेऽपि तिष्ठतः ।।</p>",
+                    transliteration: "aho aham namo mahyam vinasho yasya nasti me |<br/>brahmadistambaparyantam jagannashe'pi tishthatah ||",
+                    english: "\"O, marvelous am I! Salutations to myself, who knows no decay, and survives even the destruction of the world, from Brahma down to a blade of grass.\"",
+                    hindi: "\"अहो! मैं स्वयं को नमन करता हूँ, जिसका कोई विनाश नहीं है। ब्रह्मा से लेकर तिनके तक संपूर्ण जगत के नष्ट होने पर भी मैं विद्यमान रहता हूँ।\""
+                },
+                {
+                    sanskrit: "<p>अहो अहं नमो मह्यं एकोऽहं देहवानपि ।</p><p>क्वचिन्न गन्ता नागन्ता व्याप्य विश्वमवस्थितः ।।</p>",
+                    transliteration: "aho aham namo mahyam eko'ham dehavanapi |<br/>kvachinna ganta naganta vyapya vishvamavasthitah ||",
+                    english: "\"O, marvelous am I! Salutations to myself, who, though with a body, am One, who neither goes anywhere nor comes from anywhere, and who abides pervading the universe.\"",
+                    hindi: "\"अहो! मैं स्वयं को नमन करता हूँ। देहवान होने पर भी मैं अद्वितीय हूँ, जो न कहीं जाता है, न कहीं से आता है, और विश्व को व्याप कर स्थित है।\""
+                },
+                {
+                    sanskrit: "<p>अहो अहं नमो मह्यं दक्षो नास्तीह मत्समः ।</p><p>असंसृश्य शरीरेण येन विश्वं चिरं धृतम् ।।</p>",
+                    transliteration: "aho aham namo mahyam daksho nastiha matsamah |<br/>asamsrishya sharirena yena vishvam chiram dhritam ||",
+                    english: "\"O, marvelous am I! Salutations to myself! There is none so capable as I, who have been bearing the universe for eternity without touching it with the body.\"",
+                    hindi: "\"अहो! मैं स्वयं को नमन करता हूँ। मेरे समान निपुण कोई नहीं है, जिसने शरीर से बिना स्पर्श किए इस विश्व को अनंत काल से धारण किया हुआ है।\""
+                },
+                {
+                    sanskrit: "<p>अहो अहं नमो मह्यं यस्य मे नास्ति किंचन ।</p><p>अथवा यस्य मे सर्वं यद्वाङ्मनसगोचरम् ।।</p>",
+                    transliteration: "aho aham namo mahyam yasya me nasti kimchana |<br/>athava yasya me sarvam yadvangmanasagocharam ||",
+                    english: "\"O, marvelous am I! Salutations to myself, who possess nothing, or else possess everything that is accessible to speech and mind.\"",
+                    hindi: "\"अहो! मैं स्वयं को नमन करता हूँ, जिसका अपना कुछ भी नहीं है, अथवा वाणी और मन से जो कुछ भी जाना जा सकता है, वह सब जिसका है।\""
+                },
+                {
+                    sanskrit: "<p>ज्ञानं ज्ञेयं तथा ज्ञाता त्रितयं नास्ति वास्तवम् ।</p><p>अज्ञानाद्भाति यत्रेदं सोऽहमस्मि निरञ्जनः ।।</p>",
+                    transliteration: "jnanam jneyam tatha jnata tritayam nasti vastavam |<br/>ajnanadbhati yatredam so'hamasmi niranjanah ||",
+                    english: "\"Knowledge, the object of knowledge, and the knower—these three are not real. I am that spotless reality in which they appear through ignorance.\"",
+                    hindi: "\"ज्ञान, ज्ञेय और ज्ञाता—यह त्रयी वास्तव में नहीं है। अज्ञान के कारण यह जिसमें भासती है, वह निरंजन मैं ही हूँ।\""
+                },
+                {
+                    sanskrit: "<p>द्वैतमूलमहो दुःखं नान्यस्तस्यास्ति भेषजम् ।</p><p>दृश्यमेतन्मृषा सर्वं एकोऽहं चिद्रसोमलः ।।</p>",
+                    transliteration: "dvaitamulamaho duhkham nanyastasyasti bheshajam |<br/>drishyametanmrisha sarvam eko'ham chidrasomalah ||",
+                    english: "\"Oh, the root of misery is duality! There is no other remedy for it than the realization that all objects of experience are false, and I am the one, pure, consciousness and bliss.\"",
+                    hindi: "\"अहो! द्वैत ही सभी दुःखों का मूल है। इसकी कोई अन्य औषधि नहीं है सिवाय इसके कि यह सब दृश्य मिथ्या है, और मैं एक, शुद्ध, चैतन्य रस हूँ।\""
+                },
+                {
+                    sanskrit: "<p>बोधमात्रोऽहमज्ञानादुपाधिः कल्पितो मया ।</p><p>एवं विमृशतो नित्यं निर्विकल्पे स्थितिर्मम ।।</p>",
+                    transliteration: "bodhamatro'hamajnanadupadhih kalpito maya |<br/>evam vimrushato nityam nirvikalpe sthitirmama ||",
+                    english: "\"I am pure awareness; through ignorance I have imagined myself to have attributes. Constantly reflecting thus, my resting place is in the Unconditioned.\"",
+                    hindi: "\"मैं केवल बोधमात्र हूँ; अज्ञान से मैंने स्वयं पर उपाधियों की कल्पना की है। निरंतर ऐसा विचार करते हुए मेरी स्थिति निर्विकल्प में है।\""
+                },
+                {
+                    sanskrit: "<p>न मे बन्धोऽस्ति मोक्षो वा भ्रान्तिः शान्ता निराश्रया ।</p><p>अहो मयि स्थितं विश्वं वस्तुतो न मयि स्थितम् ।।</p>",
+                    transliteration: "na me bandho'sti moksho va bhrantih shanta nirashraya |<br/>aho mayi sthitam vishvam vastuto na mayi sthitam ||",
+                    english: "\"I have neither bondage nor liberation. The illusion has lost its basis and ceased. Oh, the universe exists in me, yet in reality it does not exist in me.\"",
+                    hindi: "\"मेरा न कोई बंधन है, न मोक्ष। आश्रयहीन होकर भ्रांति शांत हो गई है। अहो! यह विश्व मुझमें स्थित है, फिर भी वास्तव में मुझमें स्थित नहीं है।\""
+                },
+                {
+                    sanskrit: "<p>सशरीरमिदं विश्वं नाकिंचिदिति निश्चितम् ।</p><p>शुद्धचिन्मात्र आत्मा च तत्कस्मिन् कल्पनाधुना ।।</p>",
+                    transliteration: "sashariramidam vishvam nakinchiditi nishchitam |<br/>shuddhachinmatra atma cha tatkasmin kalpanadhuna ||",
+                    english: "\"It is certain that this body and the universe are nothing at all, and the Self is pure consciousness alone. So on what can imagination now be based?\"",
+                    hindi: "\"यह निश्चित है कि यह शरीर और विश्व कुछ भी नहीं हैं, और आत्मा केवल शुद्ध चैतन्य है। तो अब यह कल्पना किस पर आधारित हो सकती है?\""
+                },
+                {
+                    sanskrit: "<p>शरीरं स्वर्गनरकौ बन्धमोक्षौ भयं तथा ।</p><p>कल्पनामात्रमेवैतत् किं मे कार्यं चिदात्मनः ।।</p>",
+                    transliteration: "shariram svarganarakau bandhamokshau bhayam tatha |<br/>kalpanamatramevaitat kim me karyam chidatmanah ||",
+                    english: "\"Body, heaven and hell, bondage and liberation, and fear too—all this is pure imagination. What is there left to do for me whose very nature is consciousness?\"",
+                    hindi: "\"शरीर, स्वर्ग-नरक, बंधन-मोक्ष, और भय भी—यह सब केवल कल्पना मात्र है। मुझ चैतन्य स्वरूप के लिए अब क्या कार्य शेष है?\""
+                },
+                {
+                    sanskrit: "<p>अहो जनसमूहेऽपि न द्वैतं पश्यतो मम ।</p><p>अरण्यमिव संवृत्तं क्व रतिं करवाण्यहम् ।।</p>",
+                    transliteration: "aho janasamuhe'pi na dvaitam pashyato mama |<br/>aranyamiva samvrittam kva ratim karavanyaham ||",
+                    english: "\"Oh, even in a crowd of people I see no duality. It has become like a wilderness to me. To what should I attach myself?\"",
+                    hindi: "\"अहो! लोगों की भीड़ में भी मुझे द्वैत नहीं दिखता। वह मेरे लिए वन के समान हो गई है। अब मैं किससे आसक्ति करूँ?\""
+                },
+                {
+                    sanskrit: "<p>नाहं देहो न मे देहो जीवो नाहमहि हि ।</p><p>अयमेव हि मे बन्धो यासीज्जीविते स्पृहा ।।</p>",
+                    transliteration: "naham deho na me deho jivo nahamahi hi |<br/>ayameva hi me bandho yasijjivite spriha ||",
+                    english: "\"I am not the body, nor is the body mine. I am not a living being. This alone was my bondage, that I had a craving for life.\"",
+                    hindi: "\"न मैं देह हूँ, न देह मेरी है। मैं जीव भी नहीं हूँ। मेरी जीने की जो लालसा थी, वही मेरा एकमात्र बंधन था।\""
+                },
+                {
+                    sanskrit: "<p>अहो भुवनकल्लोलैर्विचित्रैर्द्राक् समुत्थितम् ।</p><p>मय्यनन्तमहाम्भोधौ चित्तवाते समुद्यते ।।</p>",
+                    transliteration: "aho bhuvanakallolairvichitrairdrak samutthitam |<br/>mayyanantamahambhodhau chittavate samudyate ||",
+                    english: "\"Oh, in me, the limitless ocean, diverse waves of worlds are suddenly produced when the wind of the mind arises.\"",
+                    hindi: "\"अहो! मुझ अनंत महासागर में, चित्त रूपी वायु के उठने पर, विचित्र भुवनों की लहरें अचानक उठने लगती हैं।\""
+                },
+                {
+                    sanskrit: "<p>मय्यनन्तमहाम्भोधौ चित्तवाते प्रशाम्यति ।</p><p>अभाग्याज्जीववणिजो जगत्पोतो विनश्वरः ।।</p>",
+                    transliteration: "mayyanantamahambhodhau chittavate prashamyati |<br/>abhagyajjivavanijo jagatpoto vinashvarah ||",
+                    english: "\"In me, the limitless ocean, when the wind of the mind subsides, the ship of the universe belonging to the unfortunate trader, the living being, is destroyed.\"",
+                    hindi: "\"मुझ अनंत महासागर में, चित्त रूपी वायु के शांत होने पर, जीव रूपी अभागे व्यापारी के जगत रूपी जहाज का नाश हो जाता है।\""
+                },
+                {
+                    sanskrit: "<p>मय्यनन्तमहाम्भोधौ आश्चर्यं जीववीचयः ।</p><p>उत्पद्यन्ते घ्नन्ति खेलन्ति प्रविशन्ति स्वभावतः ।।</p>",
+                    transliteration: "mayyanantamahambhodhau ashcharyam jivavichayah |<br/>utpadyante ghnanti khelanti pravishanti svabhavatah ||",
+                    english: "\"How wonderful! In me, the limitless ocean, the waves of individual beings arise, strike against each other, play, and disappear, all according to their nature.\"",
+                    hindi: "\"आश्चर्य! मुझ अनंत महासागर में जीव रूपी लहरें अपने स्वभाव से ही उत्पन्न होती हैं, टकराती हैं, खेलती हैं और विलीन हो जाती हैं।\""
+                }
+            ]
+        },
+        {
+            chapter: 3,
+            sanskritTitle: "आक्षेपः",
+            title: "Test of Self-Realization",
+            verses: [
+                {
+                    sanskrit: "<p>अविनाशिनमात्मानमेकं विज्ञाय तत्त्वतः ।</p><p>तवात्मज्ञानस्य धीरस्य कथमर्थार्जन रतिः ॥</p>",
+                    transliteration: "avinashinamatmanamekam vijnaya tattvatah |<br/>tavatmajnanansya dhirasya kathamartharjana ratih ||",
+                    english: "\"Knowing yourself as truly One and indestructible, how could a wise man like you desire wealth?\"",
+                    hindi: "\"आत्मा को अविनाशी और एक तत्व से जानकर, तुम जैसे धीर पुरुष की धन कमाने में कैसे रुचि हो सकती है?\""
+                },
+                {
+                    sanskrit: "<p>आत्माज्ञानादहो प्रीतिर्विषयभ्रमगोचरे ।</p><p>शुक्तेरज्ञानतो लोभो यथा रजतविभ्रमे ॥</p>",
+                    transliteration: "atmajnanadaho pritirvishayabhramagochare |<br/>shukterajnanato lobho yatha rajatavibhrame ||",
+                    english: "\"Alas, from ignorance of the Self arises attachment to the illusion of sense objects, just as greed for silver arises from ignorance of mother-of-pearl.\"",
+                    hindi: "\"अहो! आत्मा के अज्ञान से विषयों के भ्रम में आसक्ति उत्पन्न होती है, जैसे सीप के अज्ञान से उसमें चांदी के भ्रम का लोभ उत्पन्न होता है।\""
+                },
+                {
+                    sanskrit: "<p>विश्वं स्फुरति यत्रेदं तरङ्गा इव सागरे ।</p><p>सोऽहमस्मीति विज्ञाय किं दीन इव धावसि ॥</p>",
+                    transliteration: "vishvam sphurati yatredam taranga iva sagare |<br/>so'hamasmiti vijnaya kim dina iva dhavasi ||",
+                    english: "\"Knowing yourself to be That in which the universe appears like waves on the ocean, why do you run about like a miserable creature?\"",
+                    hindi: "\"यह जानकर कि जिसमें यह विश्व सागर में लहरों की तरह स्फुरित होता है, वह मैं ही हूँ, तुम एक दीन प्राणी की तरह क्यों दौड़ते हो?\""
+                },
+                {
+                    sanskrit: "<p>श्रुत्वापि शुद्धचैतन्यमात्मानमतिसुन्दरम् ।</p><p>उपस्थेऽत्यन्तसंसक्तो मालिन्यमधिगच्छति ॥</p>",
+                    transliteration: "shrutvapi shuddhachaitanyamatmanamatisundaram |<br/>upasthe'tyantasamsakto malinyamadhigacchati ||",
+                    english: "\"Even after hearing that the Self is pure consciousness and supremely beautiful, one becomes tainted if deeply attached to sexual pleasures.\"",
+                    hindi: "\"यह सुनने के बाद भी कि आत्मा शुद्ध चैतन्य और अत्यंत सुंदर है, यदि कोई काम-वासना में अत्यंत आसक्त है तो वह मलिनता को प्राप्त होता है।\""
+                },
+                {
+                    sanskrit: "<p>सर्वभूतेषु चात्मानं सर्वभूतानि चात्मनि ।</p><p>मुनेर्जानत आश्चर्यं ममत्वमनुवर्तते ॥</p>",
+                    transliteration: "sarvabhuteshu chatmanam sarvabhutani chatmani |<br/>munerjanata ashcharyam mamatvamanuvartate ||",
+                    english: "\"It is strange that the sage who knows the Self in all beings and all beings in the Self should still have a sense of 'mine'.\"",
+                    hindi: "\"यह आश्चर्य है कि जो मुनि सभी भूतों में आत्मा को और आत्मा में सभी भूतों को जानता है, उसमें भी 'ममत्व' (मेरापन) बना रहता है।\""
+                },
+                {
+                    sanskrit: "<p>आस्थितः परमाद्वैतं मोक्षार्थेऽपि व्यवस्थितः ।</p><p>आश्चर्यं कामवशगो विकलः केलिकौतुके ॥</p>",
+                    transliteration: "asthitah paramadvaitam moksharthe'pi vyavasthitah |<br/>ashcharyam kamavashago vikalah kelikautuke ||",
+                    english: "\"It is strange that one who abides in the supreme non-dual state and is intent on liberation should be subject to desire and agitated by sensual play.\"",
+                    hindi: "\"यह आश्चर्य है कि जो परम अद्वैत में स्थित है और मोक्ष के लिए तत्पर है, वह भी काम के वशीभूत होकर काम-क्रीड़ा में व्याकुल हो।\""
+                },
+                {
+                    sanskrit: "<p>उद्भूतं ज्ञानदुर्मित्रमवधार्यातिदुर्बलः ।</p><p>आश्चर्यं काममाकाङ्क्षेत् कालमन्तमनुश्रितः ॥</p>",
+                    transliteration: "udbhutam jnanadurmitramavadharyatidurbalah |<br/>ashcharyam kamamakankshet kalamantamanushritah ||",
+                    english: "\"It is strange that one who has become extremely weak and knows that death is approaching should still long for desire, knowing it to be the enemy of knowledge.\"",
+                    hindi: "\"यह आश्चर्य है कि जो अंत काल (मृत्यु) के समीप पहुँचकर अत्यंत दुर्बल हो गया है, वह भी काम को ज्ञान का शत्रु जानते हुए उसकी इच्छा करे।\""
+                },
+                {
+                    sanskrit: "<p>इहामुत्र विरक्तस्य नित्यानित्यविवेकिनः ।</p><p>आश्चर्यं मोक्षकामस्य मोक्षादेव विभीषिका ॥</p>",
+                    transliteration: "ihamutra viraktasya nityanityavivekinah |<br/>ashcharyam mokshakamasya mokshadeva vibhishika ||",
+                    english: "\"It is strange that one who is detached from this world and the next, who discriminates between the eternal and the transient, and desires liberation, should be afraid of liberation itself.\"",
+                    hindi: "\"यह आश्चर्य है कि जो इस लोक और परलोक से विरक्त है, नित्य-अनित्य का विवेकी है और मोक्ष चाहता है, वह मोक्ष से ही डरे।\""
+                },
+                {
+                    sanskrit: "<p>धीरस्तु भोज्यमानोऽपि पीड्यमानोऽपि सर्वदा ।</p><p>आत्मानं केवलं पश्यन् न तुष्यति न कुप्यति ॥</p>",
+                    transliteration: "dhirastu bhojyamanopi pidyamanopi sarvada |<br/>atmanam kevalam pashyan na tusyhati na kupyati ||",
+                    english: "\"But the wise man, always seeing only the Self, is neither pleased when feasted nor angry when tormented.\"",
+                    hindi: "\"परन्तु धीर पुरुष सदा केवल आत्मा को ही देखते हुए, भोजन (सुख) कराए जाने पर या पीड़ित किए जाने पर भी, न तो प्रसन्न होता है और न ही क्रोधित होता है।\""
+                },
+                {
+                    sanskrit: "<p>चेष्टमानं शरीरं स्वं पश्यत्यन्यशरीरवत् ।</p><p>संस्तवे चापि निन्दायां कथं क्षुभ्येन्महाशयः ॥</p>",
+                    transliteration: "cheshtamanam shariram svam pashyatyanyashariravat |<br/>samstave chapi nindayam katham kshubhyenmahashayah ||",
+                    english: "\"The great-souled one sees his own body acting as if it were another's. How can he be disturbed by praise or blame?\"",
+                    hindi: "\"महाशय व्यक्ति अपने ही शरीर को अन्य के शरीर की भाँति चेष्टा करते हुए देखता है। वह स्तुति या निंदा से कैसे क्षुब्ध हो सकता है?\""
+                },
+                {
+                    sanskrit: "<p>मायामात्रमिदं विश्वं पश्यन् विगतकौतुकः ।</p><p>अपि सन्निहिते मृत्यौ कथं त्रस्यति धीरधीः ॥</p>",
+                    transliteration: "mayamatramidam vishvam pashyan vigatakautukah |<br/>api sannihite mrityau katham trasyati dhiradhih ||",
+                    english: "\"Seeing this universe as mere illusion and free from curiosity, how can the steadfast one be terrified even when death is near?\"",
+                    hindi: "\"इस विश्व को केवल माया रूप देखता हुआ और कौतूहल से रहित धीर बुद्धि वाला व्यक्ति मृत्यु के निकट आने पर भी कैसे डर सकता है?\""
+                },
+                {
+                    sanskrit: "<p>निस्पृहं मानसं यस्य नैराश्येऽपि महात्मनः ।</p><p>तस्यात्मज्ञानतृप्तस्य तुलना केन जायते ॥</p>",
+                    transliteration: "nispriham manasam yasya nairashye'pi mahatmanah |<br/>tasyatmajnianatriptasya tulana kena jayate ||",
+                    english: "\"With whom can that great soul be compared, whose mind is free from desire even in disappointment, and who is satisfied with Self-knowledge?\"",
+                    hindi: "\"उस महात्मा की तुलना किससे की जा सकती है, जिसका मन निराशा में भी इच्छारहित है और जो केवल आत्मज्ञान से तृप्त है?\""
+                },
+                {
+                    sanskrit: "<p>स्वभावादेव जानानो दृश्यमेतन्न किंचन ।</p><p>इदं ग्राह्यमिदं त्याज्यं स किं पश्यति धीरधीः ॥</p>",
+                    transliteration: "svabhavadeva janano drishyametanna kimchana |<br/>idam grahyamidam tyajyam sa kim pashyati dhiradhih ||",
+                    english: "\"Knowing by nature that the visible world is nothing, how can the steadfast one consider this to be acceptable and that to be rejectable?\"",
+                    hindi: "\"स्वभाव से ही यह जानते हुए कि यह दृश्यमान जगत कुछ भी नहीं है, धीर बुद्धि वाला पुरुष क्या यह देखता है कि यह ग्रहण करने योग्य है और यह त्यागने योग्य?\""
+                },
+                {
+                    sanskrit: "<p>अन्तस्त्यक्तकषायस्य निर्द्वन्द्वस्य निराशिषः ।</p><p>यदृच्छयागतो भोगो न दुःखाय न तुष्टये ॥</p>",
+                    transliteration: "antastyaktakashayasya nirdvandvasya nirashishah |<br/>yadricchayagato bhogo na duhkhaya na tushtaye ||",
+                    english: "\"For him who has given up inner passions, who is beyond duality and without expectations, enjoyment coming of its own accord causes neither sorrow nor pleasure.\"",
+                    hindi: "\"जिसने भीतर की वासनाओं को त्याग दिया है, जो द्वंद्वों से रहित और आशारहित है, उसे स्वेच्छा (प्रारब्ध) से प्राप्त भोग न दुःख देता है और न ही संतुष्टि।\""
+                }
+            ]
+        },
+        {
+            chapter: 4,
+            sanskritTitle: "उल्लासः",
+            title: "Glorification of Self-Realization",
+            verses: [
+                {
+                    sanskrit: "<p>हन्तात्मज्ञानस्य धीरस्य खेलतो भोगिच्छया ।</p><p>न हि संसारवाहीकैर्मूढैः सह समानता ॥</p>",
+                    transliteration: "hantatmajnanasya dhirasya khelato bhogicchaya |<br/>na hi samsaravahaikairmudhaih saha samanata ||",
+                    english: "\"The wise one who knows the Self plays the game of life but is never like the deluded beasts of burden.\"",
+                    hindi: "\"आत्मज्ञानी धीर पुरुष इच्छा से खेलता है, संसार का बोझ ढोने वाले मूढ़ों के साथ उसकी कोई समानता नहीं है।\""
+                },
+                {
+                    sanskrit: "<p>यत् पदं प्रेप्सवो दीनाः शक्राद्याः सर्वदेवताः ।</p><p>अहो तत्र स्थितो योगी न हर्षमुपगच्छति ॥</p>",
+                    transliteration: "yat padam prepsavo dinah shakradyah sarvadevatah |<br/>aho tatra sthito yogi na harshamupagacchati ||",
+                    english: "\"Oh, the yogi who abides in that state which Indra and all the other gods desperately desire, feels no elation.\"",
+                    hindi: "\"अहो! जिस पद को प्राप्त करने के लिए इंद्र आदि सभी देवता लालायित रहते हैं, उस पद पर स्थित होकर भी योगी हर्षित नहीं होता।\""
+                },
+                {
+                    sanskrit: "<p>तज्ज्ञास्य पुण्यपापाभ्यां स्पर्शो ह्यन्तर्न जायते ।</p><p>न ह्याकाशस्य धूमेन दृश्यमानापि सङ्गतिः ॥</p>",
+                    transliteration: "tajjnasya punyapapabhyam sparsho hyantarna jayate |<br/>na hyakashasya dhumena drishyamanapi sangatih ||",
+                    english: "\"He who knows That is untouched within by good and evil, just as space is not touched by smoke, though it appears to be.\"",
+                    hindi: "\"उस तत्व को जानने वाले के अंतःकरण में पुण्य और पाप का स्पर्श नहीं होता, जैसे दिखाई देने पर भी आकाश का धुएं से कोई संग (संपर्क) नहीं होता।\""
+                },
+                {
+                    sanskrit: "<p>आत्मैवेदं जगत् सर्वं ज्ञातं येन महात्मना ।</p><p>यदृच्छया वर्तमानं तं निषेद्धुं क्षमेत कः ॥</p>",
+                    transliteration: "atmaivedam jagat sarvam jnatam yena mahatmana |<br/>yadricchaya vartamanam tam nisheddhum kshameta kah ||",
+                    english: "\"Who can prevent the great-souled one, who has known this entire universe to be the Self alone, from living as he pleases?\"",
+                    hindi: "\"जिस महात्मा ने इस संपूर्ण जगत को केवल आत्मा ही जान लिया है, स्वेच्छा से विचरण करते हुए उसे रोकने में कौन समर्थ है?\""
+                },
+                {
+                    sanskrit: "<p>आब्रह्मस्तम्बपर्यन्ते भूतग्रामे चतुर्विधे ।</p><p>विज्ञस्यैव हि सामर्थ्यमिच्छानिच्छाविवर्जने ॥</p>",
+                    transliteration: "abrahmastambaparyante bhutagrame chaturvidhe |<br/>vijnasyaiva hi samarthyamicchanicchavivarjane ||",
+                    english: "\"Of the four kinds of creatures, from Brahma down to a blade of grass, only the wise one is capable of renouncing desire and aversion.\"",
+                    hindi: "\"ब्रह्मा से लेकर तिनके तक चार प्रकार के जीवों के समूह में, इच्छा और अनिच्छा को त्यागने की सामर्थ्य केवल ज्ञानी में ही है।\""
+                },
+                {
+                    sanskrit: "<p>आत्मानमद्वयं कश्चिज्जानाति जगदीश्वरम् ।</p><p>यद् वेत्ति तत् स कुरुते न भयं तस्य कुत्रचित् ॥</p>",
+                    transliteration: "atmanamadvayam kashchijjanati jagadishvaram |<br/>yad vetti tat sa kurute na bhayam tasya kutrachit ||",
+                    english: "\"Rare is the man who knows the non-dual Self as the Lord of the universe. He does what he knows to be done, and has no fear from any quarter.\"",
+                    hindi: "\"कोई विरला ही अद्वैत आत्मा को जगत का ईश्वर (मालिक) जानता है। वह जो उचित समझता है, वही करता है; उसे कहीं से भी कोई भय नहीं है।\""
+                }
+            ]
+        },
+        { chapter: 5, sanskritTitle: "लयक्रमः", title: "Four Ways to Dissolution", verses: [{ sanskrit: "<p>न ते संगोऽस्ति केनापि किं शुद्धस्त्यक्तुमिच्छसि ।</p><p>संघातविलयं कुर्वन्नेवमेव लयं व्रज ॥</p>", transliteration: "na te sango'sti kenapi kim shuddhastyaktumicchasi |<br/>sanghatavilayam kurvannevameva layam vraja ||", english: "\"You are pure and not attached to anything. What is there to renounce? Dissolve the body complex and find peace.\"", hindi: "\"तेरा किसी के साथ संग नहीं है, तू शुद्ध है, फिर क्या छोड़ना चाहता है? देह के संघात का लय कर और शान्ति प्राप्त कर।\""}] },
+        { chapter: 6, sanskritTitle: "ज्ञानस्वरूपम्", title: "The Higher Knowledge", verses: [{ sanskrit: "<p>आकाशवदनन्तोऽहं घटवत्प्राकृतं जगत् ।</p><p>इति ज्ञानं तथैतस्य न त्यागो न ग्रहो लयः ॥</p>", transliteration: "akashavadananto'ham ghatavatprakritam jagat |<br/>iti jnanam tathaitasya na tyago na graho layah ||", english: "\"I am infinite like space; the natural world is like a jar. This is knowledge. There is nothing to renounce, accept, or destroy.\"", hindi: "\"मैं आकाश के समान अनंत हूँ और प्राकृतिक जगत घड़े के समान है। यह ज्ञान है, अतः न इसका त्याग है, न ग्रहण और न ही लय।\""}] },
+        { chapter: 7, sanskritTitle: "शान्तिः", title: "Nature of Self-Realization", verses: [{ sanskrit: "<p>मय्यनन्तमहाम्भोधौ विश्वपोत इतस्ततः ।</p><p>भ्रमति स्वान्तवातेन न ममास्त्यसहिष्णुता ॥</p>", transliteration: "mayyanantamahambhodhau vishvapota itastatah |<br/>bhramati svantavatena na mamastyasahishnuta ||", english: "\"In Me, the limitless ocean, the ark of the universe drifts hither and thither, driven by the wind of its own nature. I am not disturbed.\"", hindi: "\"मुझ अनंत महासागर में यह विश्वरूपी नाव अपने स्वभाव की वायु से इधर-उधर घूमती है, मुझे इससे कोई असहिष्णुता नहीं है।\""}] },
+        { chapter: 8, sanskritTitle: "बन्धमोक्षौ", title: "Bondage and Liberation", verses: [{ sanskrit: "<p>तदा बन्धो यदा चित्तं किंचिद्वाञ्छति शोचति ।</p><p>किंचिन्मुञ्चति गृह्णाति किंचिद्धृष्यति कुप्यति ॥</p>", transliteration: "tada bandho yada chittam kimchidvanjhati shochati |<br/>kimchinmunchati grihnati kimchiddhrishyati kupyati ||", english: "\"It is bondage when the mind desires, grieves, rejects, accepts, feels joy, or feels anger.\"", hindi: "\"बंधन तब है जब चित्त कुछ चाहता है, शोक करता है, कुछ छोड़ता है, ग्रहण करता है, हर्षित होता है या क्रोध करता है।\""}] },
+        { chapter: 9, sanskritTitle: "निर्वेदः", title: "Detachment", verses: [{ sanskrit: "<p>कृताकृते च द्वन्द्वानि कदा शान्तानि कस्य वा ।</p><p>एवं ज्ञात्वेह निर्वेदाद्भव त्यागपरोऽव्रती ॥</p>", transliteration: "kritakrite cha dvandvani kada shantani kasya va |<br/>evam jnatveha nirvedadbhava tyagaparo'vrati ||", english: "\"When are the dualities of things done and undone ever at rest? Knowing this, become indifferent to the world, renounce, and be vowless.\"", hindi: "\"किए हुए और न किए हुए के द्वंद्व किसके और कब शांत हुए हैं? ऐसा जानकर वैराग्य से त्यागी और व्रतरहित हो जा।\""}] },
+        { chapter: 10, sanskritTitle: "वैराग्यम्", title: "Quietude", verses: [{ sanskrit: "<p>विहाय वैरिणं काममर्थं चानर्थसङ्कुलम् ।</p><p>धर्ममप्येतयोर्हेतुं सर्वत्रानादरं कुरु ॥</p>", transliteration: "vihaya vairinam kamamartham chanarthasankulam |<br/>dharmamapyetayorhetum sarvatranadaram kuru ||", english: "\"Give up desire, the enemy, and wealth, which is full of mischief. Give up duty, the cause of the other two. Be indifferent to everything.\"", hindi: "\"शत्रु रूप काम और अनर्थ से भरे धन को छोड़ दे। इन दोनों के कारण रूप धर्म को भी छोड़ और सर्वत्र अनादर (उदासीनता) कर।\""}] },
+        { chapter: 11, sanskritTitle: "चिद्रूपम्", title: "Wisdom", verses: [{ sanskrit: "<p>भावाभावविकारश्च स्वभावादिति निश्चयी ।</p><p>निर्विकारो गतक्लेशः सुखेनैवोपशाम्यति ॥</p>", transliteration: "bhavabhavavikarashcha svabhavaditi nishchayi |<br/>nirvikaro gatakleshah sukhenaivopashamyati ||", english: "\"He who knows that existence, non-existence, and change are in the nature of things finds peace easily, being free from distress.\"", hindi: "\"भाव (उत्पत्ति), अभाव (विनाश) और विकार स्वभाव से ही हैं—ऐसा निश्चय करने वाला, निर्विकार और क्लेशरहित होकर सुखपूर्वक शांत हो जाता है।\""}] },
+        { chapter: 12, sanskritTitle: "स्वभावः", title: "Abiding in the Self", verses: [{ sanskrit: "<p>कायकृत्यासहः पूर्वं ततो वाग्विस्तरासहः ।</p><p>अथ चिन्तासहस्तस्मादेवमेवाहमस्थितः ॥</p>", transliteration: "kayakrityasahah purvam tato vagvistarashah |<br/>atha chintasahastasmadevamevahamashitah ||", english: "\"First I became intolerant of physical action, then of extensive speech, and finally of thought itself. Thus, I abide as I am.\"", hindi: "\"पहले मैं शारीरिक कर्मों के प्रति असहिष्णु हुआ, फिर वाणी के विस्तार के प्रति। अब मैं विचार के प्रति भी असहिष्णु हूँ। अतः मैं ऐसे ही स्थित हूँ।\""}] },
+        { chapter: 13, sanskritTitle: "यथासुखम्", title: "Happiness", verses: [{ sanskrit: "<p>अकिंचनभवं स्वास्थ्यं कौपीनत्वेऽपि दुर्लभम् ।</p><p>त्यागादाने विहायास्मादहमासे यथासुखम् ॥</p>", transliteration: "akincanabhavam svasthyam kaupinatve'pi durlabham |<br/>tyagadane vihayasmadahamase yathasukham ||", english: "\"The peace born of having nothing is difficult to attain even by wearing a loincloth. Therefore, giving up acceptance and rejection, I live happily.\"", hindi: "\"अकिंचन (कुछ न होने) से उत्पन्न स्वास्थ्य लंगोटी पहनने पर भी दुर्लभ है। अतः त्याग और ग्रहण को छोड़कर मैं सुखपूर्वक स्थित हूँ।\""}] },
+        { chapter: 14, sanskritTitle: "शान्तिः", title: "Tranquility", verses: [{ sanskrit: "<p>प्रकृत्या शून्यचित्तो यः प्रमादाद्भावभावनः ।</p><p>निद्रितो बोधित इव क्षीणसंस्मरणो हि सः ॥</p>", transliteration: "prakritya shunyachitto yah pramadatbhavabhavanah |<br/>nidrito bodhita iva kshinasamsmarano hi sah ||", english: "\"He whose mind is empty by nature, and who only thinks of things inadvertently, is like one awakened from a dream, his memories fading.\"", hindi: "\"जो स्वभाव से ही शून्यचित्त है और केवल प्रमादवश पदार्थों का चिंतन करता है, वह नींद से जागे हुए व्यक्ति के समान है जिसकी स्मृतियाँ क्षीण हो गई हैं।\""}] },
+        { chapter: 15, sanskritTitle: "तत्त्वज्ञानम्", title: "Knowledge of the Self", verses: [{ sanskrit: "<p>यथार्थतत्वं धीरस्य स्वात्मन्येवावतिष्ठते ।</p><p>अतस्तस्य न बन्धोऽस्ति न च मोक्षः कथंचन ॥</p>", transliteration: "yatharthatatvam dhirasya svatmanyevavatishthate |<br/>atastasya na bandho'sti na cha mokshah kathanchana ||", english: "\"The true nature of the wise man rests entirely in the Self. Therefore, he has no bondage, nor any liberation whatsoever.\"", hindi: "\"धीर पुरुष का यथार्थ तत्व अपनी आत्मा में ही स्थित है। अतः उसके लिए किसी भी प्रकार का न बंधन है न मोक्ष।\""}] },
+        { chapter: 16, sanskritTitle: "विशेषोपदेशः", title: "Special Instruction", verses: [{ sanskrit: "<p>आचक्ष्व शृणु वा तात नानाशास्त्राण्यनेकशः ।</p><p>तथापि न तव स्वास्थ्यं सर्वविस्मरणादृते ॥</p>", transliteration: "achakshva shrinu va tata nanashastranyanekashah |<br/>tathapi na tava svasthyam sarvavismaranadrite ||", english: "\"My child, you may often speak upon various scriptures or hear them. But you cannot be established in the Self unless you forget all.\"", hindi: "\"हे तात! तुम अनेक शास्त्रों का वर्णन करो या सुनो, फिर भी सब कुछ भूले बिना तुम्हें स्वास्थ्य (आत्म-स्थिति) प्राप्त नहीं होगा।\""}] },
+        { chapter: 17, sanskritTitle: "तत्त्वज्ञः", title: "The True Knower", verses: [{ sanskrit: "<p>तेन ज्ञानफलं प्राप्तं योगाभ्यासफलं तथा ।</p><p>तृप्तः स्वच्छेन्द्रियो नित्यं एकाकी रमते तु यः ॥</p>", transliteration: "tena jnanaaphalam praptam yogabhyasaphalam tatha |<br/>triptah svachchendriyo nityam ekaki ramate tu yah ||", english: "\"He has reaped the fruit of knowledge and the fruit of yoga practice who, always content and with purified senses, enjoys being alone.\"", hindi: "\"उसी ने ज्ञान का फल और योग-अभ्यास का फल प्राप्त किया है, जो सदैव तृप्त है, जिसकी इंद्रियां निर्मल हैं और जो एकांत में रमता है।\""}] },
+        { chapter: 18, sanskritTitle: "शान्तिः", title: "Peace", verses: [{ sanskrit: "<p>यस्य बोधोदये तावत्स्वप्नवद्भवति भ्रमः ।</p><p>तस्य खण्डसुखं किं वा किंचिद्दुःखं कथंचन ॥</p>", transliteration: "yasya bodhodaye tavatsvapnavadbhavati bhramah |<br/>tasya khandasukham kim va kinchidduhkham kathanchana ||", english: "\"For him whose illusion is dispelled like a dream by the dawn of knowledge, what is limited happiness or even a little sorrow?\"", hindi: "\"ज्ञान के उदय होने पर जिसके लिए संसार स्वप्न की तरह भ्रममात्र रह जाता है, उसके लिए खंडित सुख या थोड़ा भी दुःख कैसे हो सकता है?\""}] },
+        { chapter: 19, sanskritTitle: "आत्मविश्रान्तिः", title: "Repose in the Self", verses: [{ sanskrit: "<p>तत्त्वविज्ञानसन्दंशमादाय हृदयोदरात् ।</p><p>नानाविधपरामर्शशल्योद्धारः कृतो मया ॥</p>", transliteration: "tattvavijnanasandanshamadaya hridayodarat |<br/>nanavidhaparamarshashalyoddharah krito maya ||", english: "\"Using the tongs of true knowledge, I have extracted the thorn of diverse thoughts from the depths of my heart.\"", hindi: "\"तत्वज्ञान रूपी चिमटे से मैंने अपने हृदय के भीतर से अनेक प्रकार के विचारों रूपी कांटों को निकाल दिया है।\""}] },
+        { chapter: 20, sanskritTitle: "जीवन्मुक्तः", title: "Liberation-in-Life", verses: [{ sanskrit: "<p>क्व भूतानि क्व देहो वा क्वेन्द्रियाणि क्व वा मनः ।</p><p>क्व शून्यं क्व च नैराश्यं मत्स्वरूपे निरञ्जने ॥</p>", transliteration: "kva bhutani kva deho va kvendriyani kva va manah |<br/>kva shunyam kva cha nairashyam matsvarupe niranjane ||", english: "\"Where are the elements, where is the body, where are the organs, or where is the mind? Where is void or despair, in my spotless nature?\"", hindi: "\"मुझ निरंजन स्वरूप में तत्व कहाँ हैं, देह कहाँ है, इंद्रियां कहाँ हैं, या मन कहाँ है? शून्यता या निराशा भी कहाँ है?\""}] }
+    ];
+
+    function renderSidebar() {
+        const list = document.getElementById('chapter-list');
+        let html = '';
+        gitaData.forEach((data, index) => {
+            const i = data.chapter;
+            const isActive = i === 1;
+            html += `
+                <button id="nav-btn-${i}" onclick="switchChapter(${i})" class="nav-btn w-full text-left px-4 py-3 rounded-xl transition-all duration-300 group border ${isActive ? 'bg-secondary/20 border-secondary/50 shadow-[0_0_15px_rgba(233,195,73,0.2)]' : 'border-transparent hover:bg-white/5'}">
+                    <div class="flex items-center mb-1">
+                        <span class="nav-text font-headline italic text-lg ${isActive ? 'text-secondary' : 'text-on-surface'}">${i}. ${data.sanskritTitle}</span>
+                    </div>
+                    <div class="nav-title text-[10px] tracking-widest uppercase truncate ${isActive ? 'text-primary' : 'text-on-surface-variant/60'}">${data.title}</div>
+                </button>`;
+        });
+        list.innerHTML = html;
+    }
+
+    function renderAllVerses() {
+        const container = document.getElementById('verses-container');
+        let html = '';
+        gitaData.forEach((chapterData) => {
+            html += `<div id="chapter-${chapterData.chapter}" class="chapter-section border-b border-white/5">
+                <div class="chapter-title-slide text-center w-full px-6">
+                    <h2 class="font-devanagari text-5xl md:text-7xl lg:text-8xl text-secondary mb-6 tracking-widest text-glow font-semibold">${chapterData.sanskritTitle}</h2>
+                    <h3 class="font-label text-primary/80 tracking-[0.2em] uppercase text-sm md:text-base">Chapter ${chapterData.chapter} | ${chapterData.title}</h3>
+                </div>`;
+            chapterData.verses.forEach((verse, index) => {
+                const displayVerseNum = `${chapterData.chapter.toString().padStart(2, '0')}.${(index + 1).toString().padStart(2, '0')}`;
+                const isEven = index % 2 === 0;
+                const alignment = isEven ? 'text-left lg:text-right pl-6 lg:pl-0 pr-6 lg:pr-10' : 'pl-6 lg:pl-10 text-left';
+                const interpAlign = isEven ? 'mr-auto pl-6 lg:pl-10' : 'mr-auto lg:mr-0 lg:ml-auto pl-6 lg:pl-0 pr-6 lg:pr-10 text-left lg:text-right';
+                const borderStyle = isEven ? 'border-l-2 lg:border-l-0 lg:border-r-2 border-secondary/40' : 'border-l-2 border-secondary/40';
+
+                // We process the sanskrit text here to make punctuations "sticky"
+                const processedSanskrit = makePunctuationSticky(verse.sanskrit);
+
+                html += `
+                    <article class="relative z-10">
+                        <div class="absolute inset-0 z-0 opacity-[0.05] pointer-events-none flex items-center justify-center mix-blend-screen">
+                            <svg viewBox="0 0 100 150" class="w-[80vw] h-[80vw] md:w-[45vw] md:h-[45vw] text-secondary" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="20" r="8" fill="currentColor"/><path d="M50 28c-15 17 15 37-2 57M50 32c-20 3-35 13-30 33m30-33c20 3 25 18 12 33m-14 20c-18 25-13 45-8 60m8-60c17 20 17 40 7 60M65 30L50 145" />
+                            </svg>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-12 items-center w-full relative z-10">
+                            <div class="lg:col-span-7 space-y-8 pt-12 pb-0 lg:py-12 ${isEven ? 'order-1' : 'order-1 lg:order-2'}">
+                                <div class="space-y-4">
+                                    <h2 class="font-label text-secondary tracking-widest uppercase text-[10px] ${alignment}">|| ${displayVerseNum} ||</h2>
+                                    <div class="sanskrit-verse text-2xl md:text-4xl leading-relaxed md:leading-snug ${alignment} text-purple-gold ${borderStyle} py-4">${processedSanskrit}</div>
+                                </div>
+                                <div class="${alignment}">
+                                    <h3 class="font-label text-on-surface-variant/60 tracking-[0.2em] uppercase text-[10px] mb-4">Transliteration</h3>
+                                    <p class="italic font-body leading-relaxed text-sm md:text-base text-primary">${verse.transliteration}</p>
+                                </div>
+                            </div>
+                            <div class="lg:col-span-5 pt-8 pb-12 lg:py-12 ${isEven ? 'order-2' : 'order-2 lg:order-1'}">
+                                <div class="max-w-sm w-full ${interpAlign}">
+                                    <div class="flex items-center gap-3 mb-6 ${isEven ? '' : 'lg:justify-end'}">
+                                        <h3 class="font-label text-secondary/60 tracking-[0.2em] uppercase text-[10px]">Interpretation</h3>
+                                        <button onclick="toggleTranslation()" class="trans-btn font-label text-secondary/60 hover:text-primary tracking-[0.2em] uppercase text-[10px] cursor-pointer">HINDI</button>
+                                    </div>
+                                    <p class="lang-en text-on-surface font-headline text-lg md:text-xl italic text-primary">${verse.english}</p>
+                                    <p class="lang-hi text-on-surface font-devanagari text-xl md:text-2xl text-primary">${verse.hindi}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>`;
+            });
+            html += `</div>`;
+        });
+        container.innerHTML = html;
+        setupScrollObserver();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderSidebar();
+        renderAllVerses();
+    });
+</script>
+</body>
+</html>
